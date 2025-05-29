@@ -1,0 +1,34 @@
+name: Run Coval Evaluation
+on:
+  workflow_dispatch:
+    inputs:
+      organization_id:
+        description: "Your organization ID."
+        required: true
+        type: string
+      dataset_id:
+        description: "The dataset ID to evaluate."
+        required: true
+        type: string
+      created_by:
+        description: "Identifier for who triggered the workflow."
+        required: false
+        type: string
+      test_set_name: "Name of the Test Set to evaluate."
+        required: true
+        type: string
+      config:
+        description: "Configuration JSON as a string."
+        required: true
+        type: string
+jobs:
+  run-coval-evaluation:
+    uses: coval-ai/coval-github-actions/.github/workflows/run_eval.yml@main
+    with:
+      organization_id: ${{ github.event.inputs.organization_id }}
+      dataset_id: ${{ github.event.inputs.dataset_id }}
+      created_by: ${{ github.event.inputs.created_by }}
+      test_set_name: ${{ github.event.inputs.test_set_name }}
+      config: ${{ github.event.inputs.config }}
+    secrets:
+      COVAL_API_KEY: ${{ secrets.COVAL_API_KEY }}
